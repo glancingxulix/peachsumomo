@@ -1,0 +1,77 @@
+/* 基本页面布局 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 标题居中 */
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* 选择优惠活动居中 */
+.centered {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+/* 输入区域和说明区域靠左 */
+.left {
+    margin-bottom: 20px;
+}
+
+/* 费用明细字体为12px */
+.details {
+    font-size: 12px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+/* 输入框样式 */
+input[type="number"], select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* 水印文字样式 */
+.watermark {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.2);  /* 半透明颜色 */
+    font-weight: bold;
+    z-index: 9999;
+    pointer-events: none;  /* 防止水印影响页面其他交互 */
+}
