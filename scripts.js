@@ -17,7 +17,7 @@ const activities = {
     activity1: (price) => 
         {
             if (price < 17000) return (price + 500) * 1.1;
-            if (price < 24000) return (price + 700) * 1.1;
+            if (price < 23500) return (price + 700) * 1.1;
             return  price * 1.03 * 1.1;
         },
 
@@ -76,7 +76,7 @@ function reverseCalculatePrice() {
             case "activity1":
                 if (basePrice < (17000 + 500) * 1.1) {
                     return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-                } else if (basePrice < (24000 + 700) * 1.1) {
+                } else if (basePrice < (23500 + 700) * 1.1) {
                     return basePrice / 1.1 - 700; // 对应 (price + 700) * 1.1
                 } else {
                     return basePrice / (1.03 * 1.1); // 对应 price * 1.03 * 1.1
