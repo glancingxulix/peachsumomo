@@ -7,6 +7,11 @@ const feeCostOutput = document.getElementById("feeCost");
 
 let isReversing = false;  // 防止相互触发的标志
 
+// 格式化数字为千位分隔符
+function formatNumber(num) {
+    return Math.round(num).toLocaleString();
+}
+
 // 活动计算逻辑
 const activities = {
     activity1: (price) => 
@@ -50,8 +55,8 @@ function calculatePrice() {
     const finalCost = activityCost + feeDetail;
 
     // 更新 UI
-    activityCostOutput.textContent = Math.round(activityCost);
-    feeCostOutput.textContent = Math.round(feeDetail);
+    activityCostOutput.textContent = formatNumber(activityCost); // 格式化为千位分隔符
+    feeCostOutput.textContent = formatNumber(feeDetail);         // 格式化为千位分隔符
     finalPriceInput.value = Math.round(finalCost);
 }
 
@@ -104,8 +109,8 @@ function reverseCalculatePrice() {
     const feeDetail = estimatedPrice >= 300000 ? activityCost * (fee / 2) : activityCost * fee;
 
     // 更新到手价格的细节部分
-    activityCostOutput.textContent = Math.round(activityCost);
-    feeCostOutput.textContent = Math.round(feeDetail);
+    activityCostOutput.textContent = formatNumber(activityCost); // 格式化为千位分隔符
+    feeCostOutput.textContent = formatNumber(feeDetail);         // 格式化为千位分隔符
 
     isReversing = false;
 }
