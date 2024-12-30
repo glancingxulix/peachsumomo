@@ -72,6 +72,17 @@ h4 {
 /* 水印文字样式 */
 .watermark {
     position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.3);  /* 半透明颜色 */
+    font-weight: bold;
+    z-index: 9999;
+    pointer-events: none;  /* 防止水印影响页面其他交互 */
+}
+.watermarkver {
+    position: fixed;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);

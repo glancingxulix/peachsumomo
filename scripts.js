@@ -9,7 +9,13 @@ let isReversing = false;  // 防止相互触发的标志
 
 // 活动计算逻辑
 const activities = {
-    activity1: (price) => (price <= 8000 ? (price + 250) * 1.1 : price * 1.03 * 1.1),
+    activity1: (price) => 
+        {
+            if (price < 17000) return (price + 500) * 1.1;
+            if (price < 24000) return (price + 700) * 1.1;
+            return  price * 1.03 * 1.1;
+        },
+
     activity2: (price) => {
         if (price < 10000) return (price + 500) * 1.1;
         if (price <= 49900) return (price + 1000) * 1.1;
@@ -59,21 +65,37 @@ function reverseCalculatePrice() {
     // 去掉手续费部分
     const basePrice = finalPrice / (1 + (finalPrice >= 300000 ? fee / 2 : fee));
 
-    // 获取活动对应的倍率
-    const activityMultiplier = (() => {
+    // 根据活动逻辑反向计算当前价格
+    const estimatedPrice = (() => {
         switch (selectedActivity) {
-            case "activity3": return 1.0;
-            case "activity4": return 1.03;
-            case "activity5": return 1.05;
-            case "activity6": return 1.08;
-            case "activity7": return 1.10;
-            case "activity8": return 1.15;
-            default: return 1.03; // 默认 1.03，例如 activity1
+            case "activity1":
+                if (basePrice < (17000 + 500) * 1.1) {
+                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
+                } else if (basePrice < (24000 + 700) * 1.1) {
+                    return basePrice / 1.1 - 700; // 对应 (price + 700) * 1.1
+                } else {
+                    return basePrice / (1.03 * 1.1); // 对应 price * 1.03 * 1.1
+                }
+
+            case "activity2":
+                if (basePrice < (10000 + 500) * 1.1) {
+                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
+                } else if (basePrice <= (49900 + 1000) * 1.1) {
+                    return basePrice / 1.1 - 1000; // 对应 (price + 1000) * 1.1
+                } else {
+                    return basePrice / 1.1 - 2000; // 对应 (price + 2000) * 1.1
+                }
+
+            case "activity3": return basePrice / 1.1;
+            case "activity4": return basePrice / (1.03 * 1.1);
+            case "activity5": return basePrice / (1.05 * 1.1);
+            case "activity6": return basePrice / (1.08 * 1.1);
+            case "activity7": return basePrice / (1.1 * 1.1);
+            case "activity8": return basePrice / (1.15 * 1.1);
+
+            default: return basePrice; // 默认直接返回 basePrice
         }
     })();
-
-    // 计算估算价格
-    const estimatedPrice = basePrice / 1.1 / activityMultiplier;
 
     currentPriceInput.value = Math.round(estimatedPrice); // 更新当前价格输入框
 
