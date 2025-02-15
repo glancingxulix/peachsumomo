@@ -17,7 +17,7 @@ const activities = {
     activity1: (price) => 
         {
             if (price < 17000) return (price + 500) * 1.1;
-            if (price < 23500) return (price + 700) * 1.1;
+           // if (price < 23500) return (price + 700) * 1.1;
             return  price * 1.03 * 1.1;
         },
 
@@ -27,11 +27,12 @@ const activities = {
         return (price + 2000) * 1.1;
     },
     activity3: (price) => price * 1.1,
-    activity4: (price) => price * 1.03 * 1.1,
-    activity5: (price) => price * 1.05 * 1.1,
-    activity6: (price) => price * 1.08 * 1.1,
-    activity7: (price) => price * 1.1 * 1.1,
-    activity8: (price) => price * 1.15 * 1.1,
+    activity4: (price) => price * 1.01 * 1.1,
+    activity5: (price) => price * 1.02 * 1.1,
+    activity6: (price) => price * 1.03 * 1.1,
+    activity7: (price) => price * 1.05 * 1.1,
+    activity8: (price) => price * 1.08 * 1.1,
+    activity9: (price) => price * 1.1 * 1.1,
 };
 
 let selectedActivity = "activity1"; // 默认活动
@@ -76,8 +77,8 @@ function reverseCalculatePrice() {
             case "activity1":
                 if (basePrice < (17000 + 500) * 1.1) {
                     return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-                } else if (basePrice < (23500 + 700) * 1.1) {
-                    return basePrice / 1.1 - 700; // 对应 (price + 700) * 1.1
+               // } else if (basePrice < (23500 + 700) * 1.1) {
+               //     return basePrice / 1.1 - 700; // 对应 (price + 700) * 1.1
                 } else {
                     return basePrice / (1.03 * 1.1); // 对应 price * 1.03 * 1.1
                 }
@@ -92,11 +93,12 @@ function reverseCalculatePrice() {
                 }
 
             case "activity3": return basePrice / 1.1;
-            case "activity4": return basePrice / (1.03 * 1.1);
-            case "activity5": return basePrice / (1.05 * 1.1);
-            case "activity6": return basePrice / (1.08 * 1.1);
-            case "activity7": return basePrice / (1.1 * 1.1);
-            case "activity8": return basePrice / (1.15 * 1.1);
+            case "activity4": return basePrice / (1.01 * 1.1);
+            case "activity5": return basePrice / (1.02 * 1.1);
+            case "activity6": return basePrice / (1.03 * 1.1);
+            case "activity7": return basePrice / (1.05 * 1.1);
+            case "activity8": return basePrice / (1.08 * 1.1);
+            case "activity9": return basePrice / (1.1 * 1.1);
 
             default: return basePrice; // 默认直接返回 basePrice
         }
