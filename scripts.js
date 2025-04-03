@@ -23,8 +23,11 @@ const activities = {
 
     activity2: (price) => {
         if (price < 10000) return (price + 500) * 1.1;
-        if (price <= 49900) return (price + 1000) * 1.1;
-        return (price + 2000) * 1.1;
+        if (price <= 49999) return (price + 1000) * 1.1;
+        if (price <= 99999) return (price + 2000) * 1.1;
+        if (price <= 499999) return (price + 4000) * 1.1;
+        if (price <= 999999) return (price + 8000) * 1.1;
+        return (price + 10000) * 1.1;
     },
     activity3: (price) => price * 1.1,
     activity4: (price) => price * 1.01 * 1.1,
@@ -32,7 +35,18 @@ const activities = {
     activity6: (price) => price * 1.03 * 1.1,
     activity7: (price) => price * 1.05 * 1.1,
     activity8: (price) => price * 1.08 * 1.1,
-    activity9: (price) => price * 1.1 * 1.1,
+   // activity9: (price) => price * 1.1 * 1.1,
+    activity10: (price) => {
+        if (price < 5000) return (price + 500) * 1.1;
+        if (price <= 20000) return price * 1.1 * 1.1;
+        return price * 1.05 * 1.1;
+    },
+    activity11: (price) => {
+        if (price < 10000) return price * 1.15 * 1.1;
+        if (price <= 20000) return price * 1.1 * 1.1;
+        return price * 1.05 * 1.1;
+    },
+
 };
 
 let selectedActivity = "activity1"; // 默认活动
@@ -86,10 +100,16 @@ function reverseCalculatePrice() {
             case "activity2":
                 if (basePrice < (10000 + 500) * 1.1) {
                     return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-                } else if (basePrice <= (49900 + 1000) * 1.1) {
+                } else if (basePrice <= (49999 + 1000) * 1.1) {
                     return basePrice / 1.1 - 1000; // 对应 (price + 1000) * 1.1
-                } else {
+                } else if (basePrice <= (99999 + 2000) * 1.1) {
                     return basePrice / 1.1 - 2000; // 对应 (price + 2000) * 1.1
+                } else if (basePrice <= (499999 + 4000) * 1.1) {
+                    return basePrice / 1.1 - 4000; // 对应 (price + 4000) * 1.1
+                } else if (basePrice <= (999999 + 8000) * 1.1) {
+                    return basePrice / 1.1 - 8000; // 对应 (price + 8000) * 1.1
+                } else {
+                    return basePrice / 1.1 - 10000; // 对应 (price + 10000) * 1.1
                 }
 
             case "activity3": return basePrice / 1.1;
@@ -98,7 +118,25 @@ function reverseCalculatePrice() {
             case "activity6": return basePrice / (1.03 * 1.1);
             case "activity7": return basePrice / (1.05 * 1.1);
             case "activity8": return basePrice / (1.08 * 1.1);
-            case "activity9": return basePrice / (1.1 * 1.1);
+        //    case "activity9": return basePrice / (1.1 * 1.1);
+            case "activity10":
+                if (basePrice < (5000 + 500) * 1.1) {
+                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
+                } else if (basePrice <= 20000 * 1.1 * 1.1) {
+                    return basePrice / 1.1 / 1.1; // 对应 price *1.1 * 1.1
+                } else {
+                    return basePrice / 1.1 / 1.05; // 对应 price *1.05 * 1.1
+                }
+            case "activity11":
+                if (basePrice < 10000 * 1.15 * 1.1) {
+                    return basePrice / 1.1 / 1.15; // 对应 price * 1.15 * 1.1
+                } else if (basePrice <= 20000 * 1.1 * 1.1) {
+                    return basePrice / 1.1 / 1.1; // 对应 price *1.1 * 1.1
+                } else {
+                    return basePrice / 1.1 / 1.05; // 对应 price *1.05 * 1.1
+                }
+ 
+
 
             default: return basePrice; // 默认直接返回 basePrice
         }
