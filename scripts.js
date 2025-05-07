@@ -12,15 +12,34 @@ function formatNumber(num) {
     return Math.round(num).toLocaleString();
 }
 
-// 活动计算逻辑
-const activities = {
-    activity1: (price) => 
-        {
-            if (price < 17000) return (price + 500) * 1.1;
-           // if (price < 23500) return (price + 700) * 1.1;
-            return  price * 1.03 * 1.1;
-        },
+// 平台手续费计算逻辑（独立出来便于维护）
+function getPlatformFee(activity, price) {
+    switch (activity) {
+        case "activity1":
+            if (price < 17000) return 500;
+            else if (price < 23500) return 700;
+            else return price * 0.03;
+        case "activity2":
+            if (price < 10000) return 500;
+            else if (price <= 49999) return 1000;
+            else if (price <= 99999) return 2000;
+            else if (price <= 499999) return 4000;
+            else if (price <= 999999) return 8000;
+            else return 10000;
+        case "activity10":
+            if (price < 5000) return 500;
+            else return 0;
+        default:
+            return 0;
+    }
+}
 
+// 活动函数
+const activities = {
+    activity1: (price) => {
+        if (price < 17000) return (price + 500) * 1.1;
+        return price * 1.03 * 1.1;
+    },
     activity2: (price) => {
         if (price < 10000) return (price + 500) * 1.1;
         if (price <= 49999) return (price + 1000) * 1.1;
@@ -35,7 +54,6 @@ const activities = {
     activity6: (price) => price * 1.03 * 1.1,
     activity7: (price) => price * 1.05 * 1.1,
     activity8: (price) => price * 1.08 * 1.1,
-   // activity9: (price) => price * 1.1 * 1.1,
     activity10: (price) => {
         if (price < 5000) return (price + 500) * 1.1;
         if (price <= 20000) return price * 1.1 * 1.1;
@@ -45,112 +63,90 @@ const activities = {
         if (price < 10000) return price * 1.15 * 1.1;
         if (price <= 20000) return price * 1.1 * 1.1;
         return price * 1.05 * 1.1;
-    },
-
+    }
 };
 
-let selectedActivity = "activity1"; // 默认活动
+let selectedActivity = "activity1";
 
-// 更新活动
+// 活动变更处理
 function onActivityChange() {
     selectedActivity = document.getElementById("activity").value;
     calculatePrice();
 }
 
-// 正向计算价格
+// 正向计算
 function calculatePrice() {
-    if (isReversing) return; // 防止双向触发
+    if (isReversing) return;
 
     const currentPrice = parseFloat(currentPriceInput.value) || 0;
     const fee = (parseFloat(feeInput.value) || 0) / 100;
 
-    // 调用对应活动逻辑
-    const activityCost = activities[selectedActivity](currentPrice);
+    const platformFee = getPlatformFee(selectedActivity, currentPrice);
+    const productTax = currentPrice * 0.1;
+    const platformTax = platformFee * 0.1;
+    const activityCost = currentPrice + platformFee + productTax + platformTax;
+
     const feeDetail = currentPrice >= 300000 ? activityCost * (fee / 2) : activityCost * fee;
     const finalCost = activityCost + feeDetail;
 
-    // 更新 UI
-    activityCostOutput.textContent = formatNumber(activityCost); // 格式化为千位分隔符
-    feeCostOutput.textContent = formatNumber(feeDetail);         // 格式化为千位分隔符
+    const details = `（平台手续费${formatNumber(platformFee)} + 商品税${formatNumber(productTax)} + 手续费税${formatNumber(platformTax)}）`;
+
+    activityCostOutput.textContent = `${formatNumber(activityCost)} ${details}`;
+    feeCostOutput.textContent = formatNumber(feeDetail);
     finalPriceInput.value = Math.round(finalCost);
 }
 
-// 反向计算价格
+// 反向计算
 function reverseCalculatePrice() {
     isReversing = true;
 
-    const finalPrice = parseFloat(finalPriceInput.value) || 0; // 获取到手价格
-    const fee = (parseFloat(feeInput.value) || 0) / 100; // 手续费百分比
-
-    // 去掉手续费部分
+    const finalPrice = parseFloat(finalPriceInput.value) || 0;
+    const fee = (parseFloat(feeInput.value) || 0) / 100;
     const basePrice = finalPrice / (1 + (finalPrice >= 300000 ? fee / 2 : fee));
 
-    // 根据活动逻辑反向计算当前价格
     const estimatedPrice = (() => {
         switch (selectedActivity) {
             case "activity1":
-                if (basePrice < (17000 + 500) * 1.1) {
-                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-               // } else if (basePrice < (23500 + 700) * 1.1) {
-               //     return basePrice / 1.1 - 700; // 对应 (price + 700) * 1.1
-                } else {
-                    return basePrice / (1.03 * 1.1); // 对应 price * 1.03 * 1.1
-                }
-
+                if (basePrice < (17000 + 500) * 1.1) return basePrice / 1.1 - 500;
+                return basePrice / (1.03 * 1.1);
             case "activity2":
-                if (basePrice < (10000 + 500) * 1.1) {
-                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-                } else if (basePrice <= (49999 + 1000) * 1.1) {
-                    return basePrice / 1.1 - 1000; // 对应 (price + 1000) * 1.1
-                } else if (basePrice <= (99999 + 2000) * 1.1) {
-                    return basePrice / 1.1 - 2000; // 对应 (price + 2000) * 1.1
-                } else if (basePrice <= (499999 + 4000) * 1.1) {
-                    return basePrice / 1.1 - 4000; // 对应 (price + 4000) * 1.1
-                } else if (basePrice <= (999999 + 8000) * 1.1) {
-                    return basePrice / 1.1 - 8000; // 对应 (price + 8000) * 1.1
-                } else {
-                    return basePrice / 1.1 - 10000; // 对应 (price + 10000) * 1.1
-                }
-
+                if (basePrice < (10000 + 500) * 1.1) return basePrice / 1.1 - 500;
+                if (basePrice <= (49999 + 1000) * 1.1) return basePrice / 1.1 - 1000;
+                if (basePrice <= (99999 + 2000) * 1.1) return basePrice / 1.1 - 2000;
+                if (basePrice <= (499999 + 4000) * 1.1) return basePrice / 1.1 - 4000;
+                if (basePrice <= (999999 + 8000) * 1.1) return basePrice / 1.1 - 8000;
+                return basePrice / 1.1 - 10000;
             case "activity3": return basePrice / 1.1;
             case "activity4": return basePrice / (1.01 * 1.1);
             case "activity5": return basePrice / (1.02 * 1.1);
             case "activity6": return basePrice / (1.03 * 1.1);
             case "activity7": return basePrice / (1.05 * 1.1);
             case "activity8": return basePrice / (1.08 * 1.1);
-        //    case "activity9": return basePrice / (1.1 * 1.1);
             case "activity10":
-                if (basePrice < (5000 + 500) * 1.1) {
-                    return basePrice / 1.1 - 500; // 对应 (price + 500) * 1.1
-                } else if (basePrice <= 20000 * 1.1 * 1.1) {
-                    return basePrice / 1.1 / 1.1; // 对应 price *1.1 * 1.1
-                } else {
-                    return basePrice / 1.1 / 1.05; // 对应 price *1.05 * 1.1
-                }
+                if (basePrice < (5000 + 500) * 1.1) return basePrice / 1.1 - 500;
+                if (basePrice <= 20000 * 1.1 * 1.1) return basePrice / 1.1 / 1.1;
+                return basePrice / 1.1 / 1.05;
             case "activity11":
-                if (basePrice < 10000 * 1.15 * 1.1) {
-                    return basePrice / 1.1 / 1.15; // 对应 price * 1.15 * 1.1
-                } else if (basePrice <= 20000 * 1.1 * 1.1) {
-                    return basePrice / 1.1 / 1.1; // 对应 price *1.1 * 1.1
-                } else {
-                    return basePrice / 1.1 / 1.05; // 对应 price *1.05 * 1.1
-                }
- 
-
-
-            default: return basePrice; // 默认直接返回 basePrice
+                if (basePrice < 10000 * 1.15 * 1.1) return basePrice / 1.1 / 1.15;
+                if (basePrice <= 20000 * 1.1 * 1.1) return basePrice / 1.1 / 1.1;
+                return basePrice / 1.1 / 1.05;
+            default: return basePrice;
         }
     })();
 
-    currentPriceInput.value = Math.round(estimatedPrice); // 更新当前价格输入框
+    currentPriceInput.value = Math.round(estimatedPrice);
 
-    // 更新活动商品到手价和手续费
-    const activityCost = activities[selectedActivity](estimatedPrice); // 活动商品价格
+    const platformFee = getPlatformFee(selectedActivity, estimatedPrice);
+    const productTax = estimatedPrice * 0.1;
+    const platformTax = platformFee * 0.1;
+    const activityCost = estimatedPrice + platformFee + productTax + platformTax;
+
     const feeDetail = estimatedPrice >= 300000 ? activityCost * (fee / 2) : activityCost * fee;
+    const details = `（平台手续费${formatNumber(platformFee)} + 商品税${formatNumber(productTax)} + 手续费税${formatNumber(platformTax)}）`;
 
-    // 更新到手价格的细节部分
-    activityCostOutput.textContent = formatNumber(activityCost); // 格式化为千位分隔符
-    feeCostOutput.textContent = formatNumber(feeDetail);         // 格式化为千位分隔符
+    activityCostOutput.textContent = `${formatNumber(activityCost)} ${details}`;
+    feeCostOutput.textContent = formatNumber(feeDetail);
 
     isReversing = false;
+
 }
