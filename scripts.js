@@ -66,7 +66,7 @@ const activities = {
     }
 };
 
-let selectedActivity = "activity1";
+let selectedActivity = "activity1";// 默认活动
 
 // 活动变更处理
 function onActivityChange() {
@@ -76,11 +76,12 @@ function onActivityChange() {
 
 // 正向计算
 function calculatePrice() {
-    if (isReversing) return;
+    if (isReversing) return; // 防止双向触发
 
     const currentPrice = parseFloat(currentPriceInput.value) || 0;
     const fee = (parseFloat(feeInput.value) || 0) / 100;
 
+    // 调用对应活动逻辑
     const platformFee = getPlatformFee(selectedActivity, currentPrice);
     const productTax = currentPrice * 0.1;
     const platformTax = platformFee * 0.1;
@@ -89,6 +90,7 @@ function calculatePrice() {
     const feeDetail = currentPrice >= 300000 ? activityCost * (fee / 2) : activityCost * fee;
     const finalCost = activityCost + feeDetail;
 
+    // 更新 UI
     const details = `（平台手续费${formatNumber(platformFee)} + 商品税${formatNumber(productTax)} + 手续费税${formatNumber(platformTax)}）`;
 
     activityCostOutput.textContent = `${formatNumber(activityCost)} ${details}`;
