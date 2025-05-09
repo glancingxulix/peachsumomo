@@ -59,7 +59,7 @@ select {
     border-radius: 6px;
     border: 1px solid #ddd;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     transition: border-color 0.3s ease;
 }
 
@@ -74,9 +74,9 @@ select:focus {
     font-size: 13px;
     background-color: #fafafa;
     border-left: 4px solid #c6557d;
-    padding: 12px;
+    padding: 8px;
     border-radius: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     color: #555;
 }
 
@@ -107,13 +107,13 @@ h4 {
 }
 
 .watermark {
-    bottom: 30px;
+    bottom: 40px;
     font-size: 16px;
     color: rgba(0, 0, 0, 0.25);
 }
 
 .watermarkver {
-    bottom: 10px;
+    bottom: 20px;
     font-size: 13px;
     color: rgba(0, 0, 0, 0.15);
 }
@@ -128,3 +128,4 @@ h4 {
 .left {
     margin-bottom: 20px;
 }
+
