@@ -17,7 +17,7 @@ function getPlatformFee(activity, price) {
     switch (activity) {
         case "activity1":
             if (price < 17000) return 500;
-            else if (price < 23500) return 700;
+            //else if (price < 23500) return 700;
             else return price * 0.03;
         case "activity2":
             if (price < 10000) return 500;
@@ -26,9 +26,28 @@ function getPlatformFee(activity, price) {
             else if (price <= 499999) return 4000;
             else if (price <= 999999) return 8000;
             else return 10000;
+        case "activity3":
+            return price * 0.00;  // 无平台手续费
+        case "activity4":
+            return price * 0.01;
+        case "activity5":
+            return price * 0.02;
+        case "activity6":
+            return price * 0.03;
+        case "activity7":
+            return price * 0.05;
+        case "activity8":
+            return price * 0.08;
+      
         case "activity10":
             if (price < 5000) return 500;
-            else return 0;
+            else if (price <= 20000) return price * 0.1;
+            else return price * 0.05;
+        case "activity11":
+            if (price < 10000) return price * 0.15;
+            else if (price <= 20000) return price * 0.10;
+            else return price * 0.05;
+
         default:
             return 0;
     }
