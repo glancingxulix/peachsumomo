@@ -49,6 +49,9 @@ function getPlatformFee(activity, price) {
             if (price < 10000) return price * 0.15;
             else if (price <= 20000) return price * 0.10;
             else return price * 0.05;
+        case "activity12":
+            if (price <=10000) return 500;
+            else return price * 0.05;
 
         default:
             return 0;
@@ -85,7 +88,11 @@ const activities = {
         if (price < 10000) return price * 1.15 * 1.1;
         if (price <= 20000) return price * 1.1 * 1.1;
         return price * 1.05 * 1.1;
-    }
+    },
+    activity12: (price) => {
+        if (price <= 10000) return (price + 500) * 1.1;
+        return price * 1.05 * 1.1;
+    },
 };
 
 let selectedActivity = "activity1";// 默认活动
@@ -155,6 +162,9 @@ function reverseCalculatePrice() {
                 if (basePrice < 10000 * 1.15 * 1.1) return basePrice / 1.1 / 1.15;
                 if (basePrice <= 20000 * 1.1 * 1.1) return basePrice / 1.1 / 1.1;
                 return basePrice / 1.1 / 1.05;
+            case "activity12":
+                if (basePrice <= (10000 + 500) * 1.1) return basePrice / 1.1 - 500;
+                return basePrice / (1.05 * 1.1);
             default: return basePrice;
         }
     })();
