@@ -17,7 +17,7 @@
             <select id="activity" onchange="onActivityChange()">
                 <option value="activity1">AUC - 3%费用</option>
                 <option value="activity2">ECO - 阶梯式费用</option>
-                <option value="activity3">通用 0%（NJ BIHO DK腕表 Bestlife NBAA腕表 WA DA JDS NAMARA）</option>
+                <option value="activity3">通用 0%（NJ RK JBA东京珠宝 JBA金泽 DA JDS BIHO DK腕表 Bestlife NBAA腕表 WA NAMARA）</option>
                 <option value="activity4">通用 1%（NBAA）</option>
                 <option value="activity5">通用 2%（RS珠宝 NAMARA珠宝手表 GTA表）</option>
                 <option value="activity6">通用 3%（NANIWA KOME MEKIKI TL SG 大吉珠宝表 DK包珠宝 OTA TOK QPK RS DA NAMARA包）</option>
@@ -26,48 +26,145 @@
                 <option value="activity9">通用 10%（ECO Trade）</option>
                 <option value="activity10">JBA - 阶梯式费用 </option>
                 <option value="activity11">KOMEHYO服装 - 阶梯式费用 </option>
-                <option value="activity12">JBA东京 5% </option>
+                <option value="activity12">JBA东京包 500 </option>
             </select>
+        </div>
+
+        <!-- 当前价格输入 -->
+        <div class="left">
+            <label for="currentPrice">当前价格:</label>
+            <input type="number" id="currentPrice" placeholder="输入当前价格（円）" min="0" oninput="calculatePrice()" required>
+        </div>
+
+        <!-- 活动费用明细 -->
+        <div class="left">
+            <h3>拍卖会商品到手价:</h3>
+            <div id="activityDetails" class="details">
+                <p>价格: <span id="activityCost">0</span>円</p>
+            </div>
+        </div>
+
+        <!-- 手续费 -->
+        <div class="left">
+            <label for="fee">OGATE手续费 (%) :</label>
+            <input type="number" id="fee" step="0.01" placeholder="输入手续费比例（30万日元以上商品手续费自动减半）" min="0" max="100" oninput="calculatePrice()" required>
+        </div>
+
+        <!-- 手续费用明细 -->
+        <div class="left">
+            <h3>手续费用明细:</h3>
+            <div id="feeDetails" class="details">
+                <p>手续费: <span id="feeCost">0</span>円</p>
+            </div>
+        </div>
+
+        <!-- 到手价格 -->
+        <div class="left">
+            <label for="finalPrice">到手价格:</label>
+            <input type="number" id="finalPrice" placeholder="输入到手价格(円)" min="0" oninput="reverseCalculatePrice()">
+        </div>
     </div>
 
-    <!-- 当前价格输入 -->
-                <div class="left">
-                    <label for="currentPrice">当前价格:</label>
-                    <input type="number" id="currentPrice" placeholder="输入当前价格（円）" min="0" oninput="calculatePrice()" required>
-                </div>
-
-                <!-- 活动费用明细 -->
-                <div class="left">
-                    <h3>拍卖会商品到手价:</h3>
-                    <div id="activityDetails" class="details">
-                        <p>价格: <span id="activityCost">0</span>円</p>
-                    </div>
-                </div>
-
-                <!-- 手续费 -->
-                <div class="left">
-                    <label for="fee">OGATE手续费 (%) :</label>
-                    <input type="number" id="fee" step="0.01" placeholder="输入手续费比例（30万日元以上商品手续费自动减半）" min="0" max="100" oninput="calculatePrice()" required>
-                </div>
-
-                <!-- 手续费用明细 -->
-                <div class="left">
-                    <h3>手续费用明细:</h3>
-                    <div id="feeDetails" class="details">
-                        <p>手续费: <span id="feeCost">0</span>円</p>
-                    </div>
-                </div>
-
-                <!-- 到手价格 -->
-                <div class="left">
-                    <label for="finalPrice">到手价格:</label>
-                    <input type="number" id="finalPrice" placeholder="输入到手价格(円)" min="0" oninput="reverseCalculatePrice()">
-                </div>
-</div>
-
     <div class="watermark">出品：peachsumomo</div>
-    <div class="watermarkver">更新版本：4.05 20250901</div>
+    <div class="watermarkver">更新版本：4.06 20251207</div>
     <!-- 引入外部 JS 文件 -->
     <script src="scripts.js"></script>
+
+    <!-- ============ 圣诞后删除 ============ -->
+    <div class="christmas-lights">
+        <div class="light red"></div>
+        <div class="light green"></div>
+        <div class="light yellow"></div>
+        <div class="light blue"></div>
+        <div class="light red"></div>
+        <div class="light green"></div>
+        <div class="light yellow"></div>
+        <div class="light blue"></div>
+    </div>
+    <!-- ============ 雪花容器（放在 body 末尾） ============ -->
+    <style>
+        /* 雪花样式 */
+        .snowflake {
+            position: fixed;
+            top: 0;
+            color: white;
+            font-size: 14px;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.9));
+            pointer-events: none;
+            /* 路径动画 — 让雪花真正下落 */
+            animation: fall var(--duration) linear infinite, spin var(--spinDuration) linear infinite;
+            /* 使用 offset-path 代替 transform，以免冲突 */
+            offset-path: path("M0,0 C 20,100  -20,200  0,1000"); /* 垂直 + 摇摆路线 */
+        }
+
+        /* 下落动画（offset-distance） */
+        @keyframes fall {
+            0% {
+                offset-distance: 0%;
+                opacity: 1;
+            }
+
+            100% {
+                offset-distance: 100%;
+                opacity: 0.3;
+            }
+        }
+
+        /* 旋转（只负责转，不和下落冲突） */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <script>function createSnowflake() {
+            const snowflake = document.createElement("div");
+            snowflake.classList.add("snowflake");
+
+            // 雪花 ✦
+            snowflake.textContent = "✦";
+
+            // 随机大小
+            const size = Math.random() * 10 + 10;
+            snowflake.style.fontSize = `${size}px`;
+
+            // 随机横向位置
+            snowflake.style.left = Math.random() * 100 + "vw";
+
+            // 随机速度（更慢）
+            const duration = Math.random() * 4 + 8; // 8-12秒
+            snowflake.style.setProperty("--duration", duration + "s");
+
+            // 随机旋转速度
+            const spinDuration = Math.random() * 3 + 4; // 4-7秒
+            snowflake.style.setProperty("--spinDuration", spinDuration + "s");
+
+            document.body.appendChild(snowflake);
+
+            // 移除 DOM
+            setTimeout(() => snowflake.remove(), duration * 1000);
+        }
+
+        // 22 个雪花上限
+        let snowCount = 0;
+        const maxSnow = 22;
+
+        setInterval(() => {
+            if (snowCount < maxSnow) {
+                createSnowflake();
+                snowCount++;
+
+                // 计数在雪花完成后减少
+                setTimeout(() => snowCount--, 12000);
+            }
+        }, 400);</script>
+
+    <!-- 圣诞节后删除-->
+
 </body>
 </html>
