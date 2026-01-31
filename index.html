@@ -8,6 +8,13 @@
 </head>
 <body>
     
+    <!-- 对联装饰 -->
+    <div class="couplet-wrap">
+        <img src="./images/left-couplet.png" class="couplet left" alt="">
+        <img src="./images/right-couplet.png" class="couplet right" alt="">
+    </div>
+    <!-- 对联装饰 -->
+
     <div class="container">
         <!-- 标题居中 -->
         <h1>日本拍卖会到手价格计算</h1>
@@ -67,28 +74,18 @@
     </div>
 
     <div class="watermark">出品：peachsumomo</div>
-    <div class="watermarkver">更新版本：4.06 20251207</div>
+    <div class="watermarkver">更新版本：4.07 20260131</div>
     <!-- 引入外部 JS 文件 -->
     <script src="scripts.js"></script>
 
     <!-- ============ 圣诞后删除 ============ -->
-    <div class="christmas-lights">
-        <div class="light red"></div>
-        <div class="light green"></div>
-        <div class="light yellow"></div>
-        <div class="light blue"></div>
-        <div class="light red"></div>
-        <div class="light green"></div>
-        <div class="light yellow"></div>
-        <div class="light blue"></div>
-    </div>
     <!-- ============ 雪花容器（放在 body 末尾） ============ -->
     <style>
         /* 雪花样式 */
         .snowflake {
             position: fixed;
             top: 0;
-            color: white;
+            color: #f0ef90;
             font-size: 14px;
             filter: drop-shadow(0 0 5px rgba(255,255,255,0.9));
             pointer-events: none;
@@ -153,7 +150,7 @@
 
         // 22 个雪花上限
         let snowCount = 0;
-        const maxSnow = 22;
+        const maxSnow = 35;
 
         setInterval(() => {
             if (snowCount < maxSnow) {

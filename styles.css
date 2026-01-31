@@ -4,10 +4,22 @@ body {
     margin: 0;
     padding: 30px 20px;
     /*background: linear-gradient(to right, #fdfbfb, #ebedee);圣诞后更换*/
-    background: linear-gradient(to right, #104908, #012D04);
+    background: linear-gradient(to right, #BC0100, #C2322D);
     position: relative;
     color: #333;
 }
+
+/* ===== 对联定位（最终正确版） ===== */
+.couplet-wrap {
+    position: fixed; /* 关键：相对屏幕 */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 视口宽度 */
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+/* ===== 对联定位（最终正确版） ===== */
 
 /* 底部渐变装饰 
 body::after {
@@ -66,7 +78,7 @@ select {
 
 input[type="number"]:focus,
 select:focus {
-    border-color: #ee6b6e#ee6b6e;
+    border-color: #ee6b6e;
     outline: none;
 }
 
@@ -110,13 +122,13 @@ h4 {
 .watermark {
     bottom: 40px;
     font-size: 16px;
-    color: rgba(238, 107, 110, 0.25);
+    color: rgba(0, 0, 0, 0.25);
 }
 
 .watermarkver {
     bottom: 20px;
     font-size: 13px;
-    color: rgba(238, 107, 110, 0.15);
+    color: rgba(0, 0, 0, 0.15);
 }
 
 /* 中心对齐容器 */
@@ -130,96 +142,25 @@ h4 {
     margin-bottom: 20px;
 }
 /* ======= 圣诞后删除下部 ======= */
-/* ======= 圣诞彩灯容器（整条彩灯） ======= */
-.christmas-lights {
-    position: fixed;
-    top: 50;
-    left: 0;
-    width: 100%;
-    padding: 40px 0 20px;
-    display: flex;
-    justify-content: space-evenly;
-    pointer-events: none;
-    z-index: 9999;
+/* ===== 对联中心对称定位 ===== */
+.couplet {
+    position: absolute;
+    top: 10px; /* 可微调上下 */
+    transform: scale(0.9);
+    opacity: 0.9;
+    height: auto;
+    width: auto;
+    z-index: 1;
 }
 
-    /* ======= 彩灯垂坠曲线  ======= */
-    .christmas-lights::before {
-        content: "";
-        position: absolute;
-        top: 28px;
-        left: 0;
-        width: 100%;
-        height: 40px;
-        background: url("data:image/svg+xml;utf8,\
-<svg width='100%' height='40' xmlns='http://www.w3.org/2000/svg'>\
-<path d='M0 5 Q 80 40 160 5 T 320 5 T 480 5 T 640 5 T 800 5 T 960 5 T 1120 5' stroke='#e6d59b' stroke-width='2' fill='none'/>\
-</svg>") repeat-x center;
-        opacity: 1;
+    /* 左对联：中心 - 200px */
+    .couplet.left {
+        left: calc(50% - 450px);
+        transform: translateX(-100%) translateY(-30px) scale(0.9);
     }
 
-
-/* ======= 单个灯泡结构 ======= */
-.light {
-    position: relative;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    filter: drop-shadow(0 0 4px currentColor);
-}
-
-    /* ---- 三层灯光结构：内亮点 → 中间色渐层 → 外辉光 ---- */
-    .light::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 50%;
-        background: radial-gradient( circle, rgba(255,255,255,0.5) 0%, /* 最亮中心 */
-        rgba(255,255,255,0.2) 25%, /* 柔和过渡层 */
-        currentColor 75%, /* 中间固定色 */
-        currentColor 100% );
+    /* 右对联：中心 + 200px */
+    .couplet.right {
+        left: calc(50% + 450px);
+        transform: scale(0.95);
     }
-
-    .light::after {
-        content: "";
-        position: absolute;
-        inset: -6px;
-        border-radius: 50%;
-        background: currentColor;
-        filter: blur(10px);
-        opacity: 0.55;
-    }
-
-    /* ======= 彩灯随机上下左右扰动（让灯泡不死板） ======= */
-    .light:nth-child(odd) {
-        transform: translateY(6px) translateX(-4px);
-    }
-
-    .light:nth-child(even) {
-        transform: translateY(-5px) translateX(3px);
-    }
-
-    .light:nth-child(3n) {
-        transform: translateY(10px) translateX(-7px);
-    }
-
-    .light:nth-child(4n) {
-        transform: translateY(-8px) translateX(5px);
-    }
-
-/* ======= 彩灯颜色 ======= */
-.red {
-    color: #ee6b6e;
-}
-
-.green {
-    color: #a0bf52;
-}
-
-.yellow {
-    color: #ffd60a;
-}
-
-.blue {
-    color: #64b1ff;
-}
