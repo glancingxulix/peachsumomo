@@ -52,6 +52,9 @@ function getPlatformFee(activity, price) {
         case "activity12":
             if (price <=10000) return 500;
             else return price * 0.01;
+        case "activity13":
+            if (price < 10000) return 700;
+            else return price * 0.07;
 
         default:
             return 0;
@@ -92,6 +95,10 @@ const activities = {
     activity12: (price) => {
         if (price <= 10000) return (price + 500) * 1.1;
         return price * 1.01 * 1.1;
+    },
+    activity13: (price) => {
+        if (price < 10000) return (price + 700) * 1.1;
+        return price * 1.07 * 1.1;
     },
 };
 
@@ -165,7 +172,12 @@ function reverseCalculatePrice() {
             case "activity12":
                 if (basePrice <= (10000 + 500) * 1.1) return basePrice / 1.1 - 500;
                 return basePrice / (1.01 * 1.1);
+            case "activity13":
+                if (basePrice < (10000 + 700) * 1.1) return basePrice / 1.1 - 700;
+                return basePrice / (1.07 * 1.1);
+
             default: return basePrice;
+
         }
     })();
 
